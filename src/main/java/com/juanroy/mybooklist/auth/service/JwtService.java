@@ -3,8 +3,7 @@ package com.juanroy.mybooklist.auth.service;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.Getter;
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Claims;
@@ -21,7 +20,6 @@ public class JwtService {
     @Value("${security.jwt.secret-key}")
     private String secretKey;
 
-    @Getter
     @Value("${security.jwt.expiration-time}")
     private Long jwtExpiration;
 
@@ -31,6 +29,10 @@ public class JwtService {
 
     public Date extractExpirationTime(String token) {
         return extractClaim(token, Claims::getExpiration);
+    }
+
+    public long getExpirationTime() {
+        return jwtExpiration;
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimResolver) {

@@ -6,10 +6,12 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import module java.base;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Getter
 @Setter
 public class User implements UserDetails {
@@ -35,7 +37,8 @@ public class User implements UserDetails {
     @Column(name = "verification_expiration")
     private LocalDateTime verificationCodeExpiresAt;
 
-    public User(){};
+    public User() {
+    }
 
     public User(String username, String email, String password) {
         this.username = username;
@@ -59,7 +62,7 @@ public class User implements UserDetails {
     }
 
     @Override
-    public boolean isCredentialsNonExpired(){
+    public boolean isCredentialsNonExpired() {
         return true;
     }
 
@@ -67,5 +70,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
-
 }
