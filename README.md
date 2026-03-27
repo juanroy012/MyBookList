@@ -21,21 +21,28 @@ Set these in **GitHub -> Settings -> Secrets and variables -> Actions**:
 
 Your Spring app needs these environment variables in Fly:
 
-- `SPRING_DATASOURCE_URL`
+- `SPRING_DATASOURCE_URL` **or** `DATABASE_URL`
 - `SPRING_DATASOURCE_USERNAME`
 - `SPRING_DATASOURCE_PASSWORD`
 - `JWT_SECRET_KEY`
 - `SUPPORT_EMAIL`
 - `APP_PASSWORD`
 
+### Database URL format
+
+The app now accepts either:
+
+- a JDBC URL, such as `jdbc:postgresql://host:5432/db?sslmode=require&prepareThreshold=0`
+- a Fly/common Postgres URL, such as `postgres://user:password@host:5432/db?sslmode=require`
+
+If you use `DATABASE_URL` or a non-JDBC `SPRING_DATASOURCE_URL`, the app converts it to JDBC at startup automatically.
+
 ## One-time Fly setup (PowerShell)
 
 ```powershell
 flyctl auth login
 flyctl apps create <your-fly-app-name>
-flyctl secrets set SPRING_DATASOURCE_URL="<jdbc-url>" --app <your-fly-app-name>
-flyctl secrets set SPRING_DATASOURCE_USERNAME="<db-user>" --app <your-fly-app-name>
-flyctl secrets set SPRING_DATASOURCE_PASSWORD="<db-password>" --app <your-fly-app-name>
+flyctl secrets set DATABASE_URL="postgres://<db-user>:<db-password>@<db-host>:5432/<db-name>?sslmode=require" --app <your-fly-app-name>
 flyctl secrets set JWT_SECRET_KEY="<jwt-secret>" --app <your-fly-app-name>
 flyctl secrets set SUPPORT_EMAIL="<support-email>" --app <your-fly-app-name>
 flyctl secrets set APP_PASSWORD="<app-password>" --app <your-fly-app-name>
