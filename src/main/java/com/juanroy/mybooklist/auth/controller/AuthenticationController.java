@@ -2,11 +2,11 @@ package com.juanroy.mybooklist.auth.controller;
 
 import com.juanroy.mybooklist.auth.service.AuthenticationService;
 import com.juanroy.mybooklist.auth.service.JwtService;
-import com.juanroy.mybooklist.user.dto.request.LoginUserDto;
-import com.juanroy.mybooklist.user.dto.request.RegisterUserDto;
-import com.juanroy.mybooklist.user.dto.request.VerifyUserDto;
+import com.juanroy.mybooklist.auth.dto.request.LoginUserDto;
+import com.juanroy.mybooklist.auth.dto.request.RegisterUserDto;
+import com.juanroy.mybooklist.auth.dto.request.VerifyUserDto;
 import com.juanroy.mybooklist.user.model.User;
-import com.juanroy.mybooklist.user.dto.response.LoginResponse;
+import com.juanroy.mybooklist.auth.dto.response.LoginResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,21 +38,13 @@ public class AuthenticationController {
 
     @PostMapping("/verify")
     public ResponseEntity<?> verifyUser(@RequestBody VerifyUserDto verifyUserDto) {
-        try {
-            authenticationService.verifyUser(verifyUserDto);
-            return ResponseEntity.ok("Account verified successfully");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        authenticationService.verifyUser(verifyUserDto);
+        return ResponseEntity.ok("Account verified successfully");
     }
 
     @PostMapping("/resend")
     public ResponseEntity<?> resendVerificationCode(@RequestBody String email) {
-        try {
             authenticationService.resetVerificationCode(email);
             return ResponseEntity.ok("Verification code sent");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
     }
 }

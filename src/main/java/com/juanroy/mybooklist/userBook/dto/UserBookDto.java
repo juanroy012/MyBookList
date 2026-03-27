@@ -11,7 +11,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserBookDto {
-    private User user;
     private Book book;
     private ReadingStatus readingStatus;
     @Min(value = 1, message = "Rating cannot be below 1")

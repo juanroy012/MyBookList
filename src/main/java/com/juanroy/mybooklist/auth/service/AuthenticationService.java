@@ -1,9 +1,9 @@
 package com.juanroy.mybooklist.auth.service;
 
 import com.juanroy.mybooklist.email.service.EmailService;
-import com.juanroy.mybooklist.user.dto.request.LoginUserDto;
-import com.juanroy.mybooklist.user.dto.request.RegisterUserDto;
-import com.juanroy.mybooklist.user.dto.request.VerifyUserDto;
+import com.juanroy.mybooklist.auth.dto.request.LoginUserDto;
+import com.juanroy.mybooklist.auth.dto.request.RegisterUserDto;
+import com.juanroy.mybooklist.auth.dto.request.VerifyUserDto;
 import com.juanroy.mybooklist.user.model.User;
 import com.juanroy.mybooklist.user.repository.UserRepository;
 import jakarta.mail.MessagingException;

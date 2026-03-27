@@ -1,4 +1,4 @@
-package com.juanroy.mybooklist.config;
+package com.juanroy.mybooklist.auth.filter;
 
 import com.juanroy.mybooklist.auth.service.JwtService;
 import jakarta.servlet.FilterChain;
@@ -71,8 +71,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             filterChain.doFilter(request, response);
-        } catch ( Exception e ) {
-            handlerExceptionResolver.resolveException(request, response, null, e);
-        }
+        }  catch (Exception e) {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        handlerExceptionResolver.resolveException(request, response, null, e);
     }
+
+}
 }

@@ -1,4 +1,4 @@
-package com.juanroy.mybooklist.user.dto.response;
+package com.juanroy.mybooklist.auth.dto.response;
 
 public record LoginResponse(
         String token,

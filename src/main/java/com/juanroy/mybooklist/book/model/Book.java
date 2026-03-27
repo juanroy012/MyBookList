@@ -22,10 +22,12 @@ public class Book {
 
     private Long coverId;
 
+    @Column(unique = true, nullable = false)
     private String isbn;
 
     private String firstSentence;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     public Book(){};

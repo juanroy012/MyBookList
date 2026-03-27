@@ -1,4 +1,4 @@
-package com.juanroy.mybooklist.config;
+package com.juanroy.mybooklist.email;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

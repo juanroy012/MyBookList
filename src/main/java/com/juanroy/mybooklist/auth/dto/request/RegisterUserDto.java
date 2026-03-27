@@ -1,4 +1,4 @@
-package com.juanroy.mybooklist.user.dto.request;
+package com.juanroy.mybooklist.auth.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
