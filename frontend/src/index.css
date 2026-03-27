@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Dark by default */
+    --background: 225 15% 8%;
+    --foreground: 220 10% 90%;
+
+    --card: 225 14% 11%;
+    --card-foreground: 220 10% 90%;
+
+    --popover: 225 15% 10%;
+    --popover-foreground: 220 10% 90%;
+
+    --primary: 210 60% 55%;
+    --primary-foreground: 225 15% 8%;
+
+    --secondary: 225 12% 16%;
+    --secondary-foreground: 220 10% 80%;
+
+    --muted: 225 12% 16%;
+    --muted-foreground: 220 8% 55%;
+
+    --accent: 210 30% 18%;
+    --accent-foreground: 210 50% 70%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 225 12% 18%;
+    --input: 225 12% 18%;
+    --ring: 210 60% 55%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 225 14% 11%;
+    --sidebar-foreground: 220 10% 90%;
+    --sidebar-primary: 210 60% 55%;
+    --sidebar-primary-foreground: 225 15% 8%;
+    --sidebar-accent: 210 30% 18%;
+    --sidebar-accent-foreground: 210 50% 70%;
+    --sidebar-border: 225 12% 18%;
+    --sidebar-ring: 210 60% 55%;
+
+    /* Custom tokens */
+    --surface: 225 14% 10%;
+    --surface-foreground: 220 10% 90%;
+    --ink: 220 10% 90%;
+    --ink-light: 220 8% 55%;
+    --cream: 225 15% 8%;
+
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+  }
+
+  .light {
+    --background: 220 15% 96%;
+    --foreground: 225 20% 12%;
+
+    --card: 220 12% 98%;
+    --card-foreground: 225 20% 12%;
+
+    --popover: 220 15% 96%;
+    --popover-foreground: 225 20% 12%;
+
+    --primary: 210 65% 48%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 10% 91%;
+    --secondary-foreground: 225 18% 25%;
+
+    --muted: 220 10% 92%;
+    --muted-foreground: 220 10% 42%;
+
+    --accent: 210 30% 92%;
+    --accent-foreground: 210 60% 35%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 10% 88%;
+    --input: 220 10% 88%;
+    --ring: 210 65% 48%;
+
+    --surface: 220 12% 99%;
+    --surface-foreground: 225 20% 12%;
+    --ink: 225 20% 12%;
+    --ink-light: 220 10% 42%;
+    --cream: 220 15% 96%;
+
+    --sidebar-background: 220 12% 98%;
+    --sidebar-foreground: 225 20% 12%;
+    --sidebar-primary: 210 65% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 30% 92%;
+    --sidebar-accent-foreground: 210 60% 35%;
+    --sidebar-border: 220 10% 88%;
+    --sidebar-ring: 210 65% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .text-ink {
+    color: hsl(var(--ink));
+  }
+
+  .text-ink-light {
+    color: hsl(var(--ink-light));
+  }
+
+  .bg-surface {
+    background-color: hsl(var(--surface));
+  }
+
+  .bg-cream {
+    background-color: hsl(var(--cream));
+  }
+}
