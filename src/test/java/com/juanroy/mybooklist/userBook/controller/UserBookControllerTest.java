@@ -58,13 +58,13 @@ class UserBookControllerTest {
         testUserBook.setReview("Good so far");
     }
 
-    // ── GET /userCollection ─────────────────────────────────────────
+    // ── GET /api/v1/userCollection ─────────────────────────────────────────
 
     @Test
     void getCollection_withAuth_returnsListOfUserBooks() throws Exception {
         when(userBookService.getCollection(any(User.class))).thenReturn(List.of(testUserBook));
 
-        mockMvc.perform(get("/userCollection").with(user(testUser)))
+        mockMvc.perform(get("/api/v1/userCollection").with(user(testUser)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$[0].readingStatus").value("IN_PROGRESS"))
@@ -78,7 +78,7 @@ class UserBookControllerTest {
     void getCollection_withAuth_emptyCollection_returnsEmptyArray() throws Exception {
         when(userBookService.getCollection(any(User.class))).thenReturn(List.of());
 
-        mockMvc.perform(get("/userCollection").with(user(testUser)))
+        mockMvc.perform(get("/api/v1/userCollection").with(user(testUser)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$").isEmpty());
@@ -86,11 +86,11 @@ class UserBookControllerTest {
 
     @Test
     void getCollection_withoutAuth_returns4xx() throws Exception {
-        mockMvc.perform(get("/userCollection"))
+        mockMvc.perform(get("/api/v1/userCollection"))
                 .andExpect(status().is4xxClientError());
     }
 
-    // ── POST /userCollection ────────────────────────────────────────
+    // ── POST /api/v1/userCollection ────────────────────────────────────────
 
     @Test
     void addCollection_withValidBody_returns200AndSavedEntry() throws Exception {
@@ -99,7 +99,7 @@ class UserBookControllerTest {
 
         UserBookDto dto = buildDto(testBook, ReadingStatus.IN_PROGRESS, 7, "Good so far");
 
-        mockMvc.perform(post("/userCollection")
+        mockMvc.perform(post("/api/v1/userCollection")
                         .with(user(testUser))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
@@ -115,7 +115,7 @@ class UserBookControllerTest {
 
         UserBookDto dto = buildDto(testBook, ReadingStatus.COMPLETED, 9, "Great");
 
-        mockMvc.perform(post("/userCollection")
+        mockMvc.perform(post("/api/v1/userCollection")
                         .with(user(testUser))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
@@ -126,13 +126,13 @@ class UserBookControllerTest {
     void addCollection_withoutAuth_returns4xx() throws Exception {
         UserBookDto dto = buildDto(testBook, ReadingStatus.COMPLETED, 9, "Great");
 
-        mockMvc.perform(post("/userCollection")
+        mockMvc.perform(post("/api/v1/userCollection")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().is4xxClientError());
     }
 
-    // ── PATCH /userCollection/{openLibraryId} ───────────────────────
+    // ── PATCH /api/v1/userCollection/{openLibraryId} ───────────────────────
 
     @Test
     void editCollection_withValidBody_returns200AndUpdatedEntry() throws Exception {
@@ -144,7 +144,6 @@ class UserBookControllerTest {
         when(userBookService.editCollection(eq("OL123M"), any(UserBookDto.class), any(User.class)))
                 .thenReturn(updated);
 
-        // For PATCH only editable fields are needed in the body; book comes from path
         String body = """
                 {
                   "readingStatus": "COMPLETED",
@@ -153,7 +152,7 @@ class UserBookControllerTest {
                 }
                 """;
 
-        mockMvc.perform(patch("/userCollection/OL123M")
+        mockMvc.perform(patch("/api/v1/userCollection/OL123M")
                         .with(user(testUser))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
@@ -172,7 +171,7 @@ class UserBookControllerTest {
                 { "readingStatus": "COMPLETED", "rating": 8, "review": "ok" }
                 """;
 
-        mockMvc.perform(patch("/userCollection/INVALID")
+        mockMvc.perform(patch("/api/v1/userCollection/INVALID")
                         .with(user(testUser))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
@@ -188,7 +187,7 @@ class UserBookControllerTest {
                 { "readingStatus": "DROPPED", "rating": 3, "review": "nope" }
                 """;
 
-        mockMvc.perform(patch("/userCollection/OL123M")
+        mockMvc.perform(patch("/api/v1/userCollection/OL123M")
                         .with(user(testUser))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
@@ -197,19 +196,19 @@ class UserBookControllerTest {
 
     @Test
     void editCollection_withoutAuth_returns4xx() throws Exception {
-        mockMvc.perform(patch("/userCollection/OL123M")
+        mockMvc.perform(patch("/api/v1/userCollection/OL123M")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().is4xxClientError());
     }
 
-    // ── DELETE /userCollection/{openLibraryId} ──────────────────────
+    // ── DELETE /api/v1/userCollection/{openLibraryId} ──────────────────────
 
     @Test
     void removeCollection_withValidBook_returns200WithMessage() throws Exception {
         doNothing().when(userBookService).removeCollection(eq("OL123M"), any(User.class));
 
-        mockMvc.perform(delete("/userCollection/OL123M").with(user(testUser)))
+        mockMvc.perform(delete("/api/v1/userCollection/OL123M").with(user(testUser)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Removed from collection"));
     }
@@ -219,7 +218,7 @@ class UserBookControllerTest {
         doThrow(new RuntimeException("Book not found in database"))
                 .when(userBookService).removeCollection(eq("INVALID"), any());
 
-        mockMvc.perform(delete("/userCollection/INVALID").with(user(testUser)))
+        mockMvc.perform(delete("/api/v1/userCollection/INVALID").with(user(testUser)))
                 .andExpect(status().is4xxClientError());
     }
 
@@ -228,13 +227,13 @@ class UserBookControllerTest {
         doThrow(new RuntimeException("Book not in your collection"))
                 .when(userBookService).removeCollection(eq("OL123M"), any());
 
-        mockMvc.perform(delete("/userCollection/OL123M").with(user(testUser)))
+        mockMvc.perform(delete("/api/v1/userCollection/OL123M").with(user(testUser)))
                 .andExpect(status().is4xxClientError());
     }
 
     @Test
     void removeCollection_withoutAuth_returns4xx() throws Exception {
-        mockMvc.perform(delete("/userCollection/OL123M"))
+        mockMvc.perform(delete("/api/v1/userCollection/OL123M"))
                 .andExpect(status().is4xxClientError());
     }
 
@@ -249,4 +248,3 @@ class UserBookControllerTest {
         return dto;
     }
 }
-

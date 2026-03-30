@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-// /auth/** is permitAll() in SecurityConfiguration so no auth header is needed here
+// /api/v1/auth/** is permitAll() in SecurityConfiguration so no auth header is needed here
 @WebMvcTest(AuthenticationController.class)
 @Import({SecurityConfiguration.class, ApplicationConfiguration.class})
 class AuthenticationControllerTest {
@@ -47,7 +47,7 @@ class AuthenticationControllerTest {
         testUser.setEnabled(true);
     }
 
-    // ── POST /auth/signup ───────────────────────────────────────────
+    // ── POST /api/v1/auth/signup ───────────────────────────────────────────
 
     @Test
     void signup_withValidBody_returns200AndUserData() throws Exception {
@@ -58,7 +58,7 @@ class AuthenticationControllerTest {
         dto.setEmail("test@example.com");
         dto.setPassword("password");
 
-        mockMvc.perform(post("/auth/signup")
+        mockMvc.perform(post("/api/v1/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
@@ -77,13 +77,13 @@ class AuthenticationControllerTest {
         dto.setEmail("dup@example.com");
         dto.setPassword("pass");
 
-        mockMvc.perform(post("/auth/signup")
+        mockMvc.perform(post("/api/v1/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().is4xxClientError());
     }
 
-    // ── POST /auth/login ────────────────────────────────────────────
+    // ── POST /api/v1/auth/login ────────────────────────────────────────────
 
     @Test
     void login_withValidCredentials_returnsTokenAndExpiry() throws Exception {
@@ -95,7 +95,7 @@ class AuthenticationControllerTest {
         dto.setEmail("test@example.com");
         dto.setPassword("password");
 
-        mockMvc.perform(post("/auth/login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
@@ -111,7 +111,7 @@ class AuthenticationControllerTest {
         dto.setEmail("wrong@example.com");
         dto.setPassword("wrong");
 
-        mockMvc.perform(post("/auth/login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().is4xxClientError());
@@ -126,13 +126,13 @@ class AuthenticationControllerTest {
         dto.setEmail("unverified@example.com");
         dto.setPassword("password");
 
-        mockMvc.perform(post("/auth/login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().is4xxClientError());
     }
 
-    // ── POST /auth/verify ───────────────────────────────────────────
+    // ── POST /api/v1/auth/verify ───────────────────────────────────────────
 
     @Test
     void verify_withValidCode_returns200() throws Exception {
@@ -142,7 +142,7 @@ class AuthenticationControllerTest {
         dto.setEmail("test@example.com");
         dto.setVerificationCode("123456");
 
-        mockMvc.perform(post("/auth/verify")
+        mockMvc.perform(post("/api/v1/auth/verify")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
@@ -158,7 +158,7 @@ class AuthenticationControllerTest {
         dto.setEmail("test@example.com");
         dto.setVerificationCode("000000");
 
-        mockMvc.perform(post("/auth/verify")
+        mockMvc.perform(post("/api/v1/auth/verify")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest())
@@ -174,19 +174,19 @@ class AuthenticationControllerTest {
         dto.setEmail("test@example.com");
         dto.setVerificationCode("wrong");
 
-        mockMvc.perform(post("/auth/verify")
+        mockMvc.perform(post("/api/v1/auth/verify")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest());
     }
 
-    // ── POST /auth/resend ───────────────────────────────────────────
+    // ── POST /api/v1/auth/resend ───────────────────────────────────────────
 
     @Test
     void resend_withUnverifiedEmail_returns200() throws Exception {
         doNothing().when(authenticationService).resetVerificationCode(anyString());
 
-        mockMvc.perform(post("/auth/resend")
+        mockMvc.perform(post("/api/v1/auth/resend")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("\"test@example.com\""))
                 .andExpect(status().isOk())
@@ -198,11 +198,11 @@ class AuthenticationControllerTest {
         doThrow(new RuntimeException("Account is already verified"))
                 .when(authenticationService).resetVerificationCode(anyString());
 
-        mockMvc.perform(post("/auth/resend")
+        mockMvc.perform(post("/api/v1/auth/resend")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("\"verified@example.com\""))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Account is already verified"));
     }
-}
 
+}
