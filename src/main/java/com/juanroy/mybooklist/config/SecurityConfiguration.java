@@ -35,7 +35,20 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers("/auth/**").permitAll()
+                        authorize.requestMatchers(
+                                "/api/v1/auth/**",
+                                "/",
+                                "/index.html",
+                                "/assets/**",
+                                "/favicon.ico",
+                                "/robots.txt",
+                                "/**/*.css",
+                                "/**/*.js",
+                                "/**/*.png",
+                                "/**/*.svg",
+                                "/**/*.ico",
+                                "/**/*.html"
+                        ).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

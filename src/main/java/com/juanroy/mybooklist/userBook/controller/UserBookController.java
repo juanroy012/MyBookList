@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/userCollection")
+@RequestMapping("/api/v1/userCollection")
 public class UserBookController {
 
     private final UserBookService userBookService;
