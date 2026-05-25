@@ -1,3 +1,14 @@
+    const res = await fetch(`${OL_BASE}/trending/${type}.json?limit=12`);
+    if (!res.ok) throw new Error(`OpenLibrary trending failed: ${res.status}`);
+    return res.json();
+    const res = await fetch(`${OL_BASE}/works/${workId}.json`);
+    if (!res.ok) throw new Error(`OpenLibrary work fetch failed: ${res.status}`);
+    return res.json();
+    const res = await fetch(
+      `${OL_BASE}/search.json?q=${encodeURIComponent(query)}&page=${page}`
+    );
+    if (!res.ok) throw new Error(`OpenLibrary search failed: ${res.status}`);
+    return res.json();
 const OL_BASE = "https://openlibrary.org";
 
 export interface OLSearchResult {
@@ -75,3 +86,4 @@ export const openLibrary = {
     return key.replace("/works/", "");
   },
 };
+

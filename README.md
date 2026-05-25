@@ -1,56 +1,43 @@
 # MyBookList
 
-This repository includes GitHub Actions CI/CD to deploy the Spring Boot backend to Fly.io.
+[![CI](https://github.com/juanroy012/MyBookList/actions/workflows/ci.yml/badge.svg)](https://github.com/juanroy012/MyBookList/actions/workflows/ci.yml)
+[![Deploy](https://github.com/juanroy012/MyBookList/actions/workflows/deploy-fly.yml/badge.svg)](https://github.com/juanroy012/MyBookList/actions/workflows/deploy-fly.yml)
 
-## What was added
+A self-hosted personal reading tracker for managing your book collection, reading progress, and reviews. With per-user data isolation and JWT authentication.
 
-- `Dockerfile` for backend container image build
-- `.dockerignore` to reduce Docker build context
-- `fly.toml` Fly.io app configuration
-- `.github/workflows/ci.yml` backend test pipeline
-- `.github/workflows/deploy-fly.yml` deploy pipeline for `main`
+🔗 **Live demo: [mybooklist.juan-roy.com](https://mybooklist.juan-roy.com/)**
 
-## Required GitHub secrets
+---
 
-Set these in **GitHub -> Settings -> Secrets and variables -> Actions**:
+## Dashboard
 
-- `FLY_API_TOKEN` (from `flyctl auth token`)
-- `FLY_APP_NAME` (your Fly app name)
+Get a quick overview of your reading activity at a glance; books in progress, recently completed, and your overall stats all in one place.
 
-## Required Fly runtime secrets
+## Book List
 
-Your Spring app needs these environment variables in Fly:
+Add, edit, and delete books from your list. Filter by reading status, search by title or author, and paginate through your collection.
 
-- `SPRING_DATASOURCE_URL` **or** `DATABASE_URL`
-- `SPRING_DATASOURCE_USERNAME`
-- `SPRING_DATASOURCE_PASSWORD`
-- `JWT_SECRET_KEY`
-- `SUPPORT_EMAIL`
-- `APP_PASSWORD`
+## Reading Progress
 
-### Database URL format
+Track your progress through each book with page counts and status updates; from "Want to Read" to "Completed".
 
-The app now accepts either:
+## Reviews & Ratings
 
-- a JDBC URL, such as `jdbc:postgresql://host:5432/db?sslmode=require&prepareThreshold=0`
-- a Fly/common Postgres URL, such as `postgres://user:password@host:5432/db?sslmode=require`
+Leave personal reviews and star ratings for books you've finished to keep your thoughts organized.
 
-If you use `DATABASE_URL` or a non-JDBC `SPRING_DATASOURCE_URL`, the app converts it to JDBC at startup automatically.
+## Theming
 
-## One-time Fly setup (PowerShell)
+Switch between dark and light mode. Your preference is saved across sessions.
 
-```powershell
-flyctl auth login
-flyctl apps create <your-fly-app-name>
-flyctl secrets set DATABASE_URL="postgres://<db-user>:<db-password>@<db-host>:5432/<db-name>?sslmode=require" --app <your-fly-app-name>
-flyctl secrets set JWT_SECRET_KEY="<jwt-secret>" --app <your-fly-app-name>
-flyctl secrets set SUPPORT_EMAIL="<support-email>" --app <your-fly-app-name>
-flyctl secrets set APP_PASSWORD="<app-password>" --app <your-fly-app-name>
-```
+---
 
-## CI/CD behavior
+## Tech Stack
 
-- Pull requests and pushes run backend tests (`ci.yml`).
-- Pushes to `main` run tests, then deploy to Fly (`deploy-fly.yml`).
-- You can also run deployment manually with **workflow_dispatch**.
-
+| Layer | Technology |
+|---|---|
+| Backend | Java 21, Spring Boot 4, Spring Security, Spring Data JPA |
+| Auth | JWT (`jjwt`), bcrypt password hashing |
+| Frontend | React 18, Vite 8, Tailwind CSS v3, Recharts 2 |
+| Database | PostgreSQL |
+| CI/CD | GitHub Actions — JUnit tests + frontend build check on every push |
+| Deployment | Fly.io, Docker multi-stage build |
